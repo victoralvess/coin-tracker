@@ -1,9 +1,10 @@
 import { isAxiosError, type AxiosInstance, type AxiosError } from 'axios';
-import { HttpResponse } from './helpers/http-response';
+import { HttpResponse } from '../domain/services/helpers/http-response';
 import { RequestError } from './helpers/request-error';
 import { UnknownServerError } from './helpers/unknown-server-error';
+import { HttpService } from '../domain/services/http-service';
 
-export class HttpService {
+export class AxiosHttpService implements HttpService {
     constructor(private axios: AxiosInstance) { }
 
     async get<T>(url: string, params: Record<string, unknown>): Promise<HttpResponse<T>> {

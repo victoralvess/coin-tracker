@@ -3,10 +3,13 @@ import { HttpService } from '../../src/domain/services/http-service';
 import { HttpResponse } from '../../src/domain/services/helpers/http-response';
 import { CoinCapSearch } from '../../src/services/helpers/coin-cap-search';
 import { CryptoCoin } from '../../src/domain/models/crypto-coin';
+import { Validator } from '../../src/domain/utils/validator';
+import { CoinCapSearchValidator } from '../../src/services/utils/coin-cap-search-validator';
 
 describe('CoinCapService', () => {
     let coinCapService: CoinCapService;
     let httpService: TestHttpService;
+    let searchValidator: Validator<CoinCapSearch, CryptoCoin[]>;
 
     class TestHttpService implements HttpService {
         public url?: string;
@@ -26,7 +29,8 @@ describe('CoinCapService', () => {
 
     beforeEach(() => {
         httpService = new TestHttpService();
-        coinCapService = new CoinCapService(httpService);
+        searchValidator = new CoinCapSearchValidator();
+        coinCapService = new CoinCapService(httpService, searchValidator);
     });
 
     describe('#search', () => {

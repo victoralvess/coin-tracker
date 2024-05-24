@@ -8,10 +8,11 @@ export default tseslint.config(
   {
     files: ['**/*.ts'],
     rules: {
-      'semi': 'off',
+      semi: 'off',
       '@typescript-eslint/semi': 'error',
       '@typescript-eslint/member-delimiter-style': 'error',
-      'quotes': ['error', 'single', { avoidEscape: true }]
+      quotes: ['error', 'single', { avoidEscape: true }],
+      'quote-props': ['error', 'as-needed']
     }
   }
 );

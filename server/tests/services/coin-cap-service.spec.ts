@@ -1,5 +1,3 @@
-import { describe, beforeEach, it, expect } from 'vitest';
-
 import { CoinCapService } from '../../src/services/coin-cap-service';
 import { HttpService } from '../../src/domain/services/http-service';
 import { HttpResponse } from '../../src/domain/services/helpers/http-response';

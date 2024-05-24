@@ -12,7 +12,7 @@ export class SearchCoinsValidator implements Validator<{ q: string }, { q: strin
         });
     }
 
-    validate(input: { q: string }): { q: string } {
+    validate(input: { q?: string }): { q: string } {
         const value = this.schema.validate(input, { allowUnknown: true });
 
         if (value.error !== undefined) {

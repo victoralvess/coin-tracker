@@ -5,6 +5,7 @@ import { CoinCapSearch } from '../../src/services/helpers/coin-cap-search';
 import { CryptoCoin } from '../../src/domain/models/crypto-coin';
 import { Validator } from '../../src/domain/utils/validator';
 import { CoinCapSearchValidator } from '../../src/services/utils/coin-cap-search-validator';
+import { CoinCapCoin } from '../../src/services/helpers/coin-cap-coin';
 
 describe('CoinCapService', () => {
     let coinCapService: CoinCapService;
@@ -68,6 +69,44 @@ describe('CoinCapService', () => {
             await expect(coinCapService.search(q)).resolves.toEqual(result);
             expect(httpService.url).toBe('https://api.coincap.io/v2/assets');
             expect(httpService.params).toEqual({ search: q, limit: 5 });
+        });
+    });
+
+    describe('#getById', () => {
+        it('should return a cryptocurrency by id correctly', async () => {
+            const id = 'ethereum';
+
+            const response: HttpResponse<{ data: CoinCapCoin }> = {
+                status: 200,
+                data: {
+                    data: {
+                        id: 'ethereum',
+                        rank: '2',
+                        symbol: 'ETH',
+                        name: 'Ethereum',
+                        supply: '120120311.4109436000000000',
+                        maxSupply: null,
+                        marketCapUsd: '448762704373.7159408068077671',
+                        volumeUsd24Hr: '10126612739.3365915362430038',
+                        priceUsd: '3735.9435644356085878',
+                        changePercent24Hr: '-2.4002059720802124',
+                        vwap24Hr: '3745.2669922418782509'
+                    }
+                }
+            };
+
+            httpService.setResponse(response);
+
+            const result: CryptoCoin = {
+                id: 'ethereum',
+                icon: 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/eth.png',
+                price: 3735.94,
+                symbol: 'ETH'
+            };
+
+            await expect(coinCapService.getById(id)).resolves.toEqual(result);
+            expect(httpService.url).toBe(`https://api.coincap.io/v2/assets/${id}`);
+            expect(httpService.params).toEqual({});
         });
     });
 });

@@ -11,6 +11,7 @@ import { ValidationError } from './src/domain/utils/validation-error';
 import { RequestError } from './src/services/helpers/request-error';
 import { UnknownServerError } from './src/services/helpers/unknown-server-error';
 import { GetCoinById } from './src/application/use-cases/get-coin-by-id';
+import { GetCoinByIdValidator } from './src/application/utils/get-coin-by-id-validator';
 
 function asyncRoute(cb: (req: Request, res: Response) => Promise<void>) {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -40,7 +41,7 @@ app.get('/coins', asyncRoute(async (req: Request, res: Response) => {
     res.json(result);
 }));
 
-const getCoinById = new GetCoinById(coinCapService);
+const getCoinById = new GetCoinById(coinCapService, new GetCoinByIdValidator());
 
 app.get('/coins/:id', asyncRoute(async (req: Request, res: Response) => {
     const result = await getCoinById.getCoin(req.params as { id: string });

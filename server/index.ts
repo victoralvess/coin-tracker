@@ -10,6 +10,7 @@ import { SearchCoinsValidator } from './src/application/utils/search-coins-valid
 import { ValidationError } from './src/domain/utils/validation-error';
 import { RequestError } from './src/services/helpers/request-error';
 import { UnknownServerError } from './src/services/helpers/unknown-server-error';
+import { GetCoinById } from './src/application/use-cases/get-coin-by-id';
 
 function asyncRoute(cb: (req: Request, res: Response) => Promise<void>) {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -27,15 +28,25 @@ app.get('/ping', (req: Request, res: Response) => {
     res.send('PONG');
 });
 
-const searchCoins = new SearchCoins(
-    new CoinCapService(new AxiosHttpService(axios), new CoinCapSearchValidator()),
-    new SearchCoinsValidator()
+const coinCapService = new CoinCapService(
+    new AxiosHttpService(axios),
+    new CoinCapSearchValidator()
 );
+
+const searchCoins = new SearchCoins(coinCapService, new SearchCoinsValidator());
 
 app.get('/coins', asyncRoute(async (req: Request, res: Response) => {
     const result = await searchCoins.searchCoins(req.query as { q: string });
     res.json(result);
 }));
+
+const getCoinById = new GetCoinById(coinCapService);
+
+app.get('/coins/:id', asyncRoute(async (req: Request, res: Response) => {
+    const result = await getCoinById.getCoin(req.params as { id: string });
+    res.json(result);
+}));
+
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     if (err instanceof ValidationError) {

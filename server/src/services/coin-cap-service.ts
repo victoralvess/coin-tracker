@@ -1,5 +1,6 @@
 import { CryptoCoin } from '../domain/models/crypto-coin';
 import { HttpService } from '../domain/services/http-service';
+import { COINCAP_URL } from '../domain/utils/constants';
 import { Validator } from '../domain/utils/validator';
 import { CoinCapSearch } from './helpers/coin-cap-search';
 
@@ -11,7 +12,7 @@ export class CoinCapService {
 
     async search(q: string): Promise<CryptoCoin[]> {
         const response = await this.httpService.get<CoinCapSearch>(
-            'https://api.coincap.io/v2/assets',
+            `${COINCAP_URL}/assets`,
             { search: q, limit: 5 }
         );
 

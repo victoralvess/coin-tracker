@@ -2,6 +2,7 @@ import { CoinCapSearch } from '../helpers/coin-cap-search';
 import { CryptoCoin } from '../../domain/models/crypto-coin';
 import { Validator } from '../../domain/utils/validator';
 import Joi, { type Schema } from 'joi';
+import { CRYPTO_ICON_URL } from '../../domain/utils/constants';
 
 export class CoinCapSearchValidator implements Validator<CoinCapSearch, CryptoCoin[]> {
     private schema: Schema<CoinCapSearch>;
@@ -29,9 +30,9 @@ export class CoinCapSearchValidator implements Validator<CoinCapSearch, CryptoCo
             return {
                 id: coin.id,
                 price: Number(coin.priceUsd),
-                icon: `https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/color/${coin.symbol.toLowerCase()}.png`, // TBD
+                icon: `${CRYPTO_ICON_URL}/${coin.symbol.toLowerCase()}.png`,
                 symbol: coin.symbol
             };
-        })
+        });
     }
 }

@@ -1,0 +1,32 @@
+{
+  "name": "@victoralvess/coin-tracker-server",
+  "version": "0.0.0",
+  "description": "Server of a simple cryptocurrency price watcher",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "rm -rf dist/ && tsc",
+    "test": "echo 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victoralvess/coin-tracker.git"
+  },
+  "keywords": [
+    "crypto",
+    "tracker"
+  ],
+  "author": "Victor Alves",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/victoralvess/coin-tracker/issues"
+  },
+  "homepage": "https://github.com/victoralvess/coin-tracker#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

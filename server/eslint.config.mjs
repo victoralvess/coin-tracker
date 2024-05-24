@@ -10,7 +10,8 @@ export default tseslint.config(
     rules: {
       'semi': 'off',
       '@typescript-eslint/semi': 'error',
-      '@typescript-eslint/member-delimiter-style': 'error'
+      '@typescript-eslint/member-delimiter-style': 'error',
+      'quotes': ['error', 'single', { avoidEscape: true }]
     }
   }
 );

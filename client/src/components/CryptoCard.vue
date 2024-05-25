@@ -24,6 +24,8 @@ const chartSeries = ref<{ name: string, data: [number, number][] }>({
   data: []
 });
 
+const MAX_HISTORIC_DATA_LENGTH = 100;
+
 const pricesWs = ref<WebSocket | null>(null);
 const toggleWs = () => {
   if (modalOpen.value) {
@@ -32,6 +34,12 @@ const toggleWs = () => {
       try {
         chartSeries.value.data
           .push([Date.now(), Number(JSON.parse(msg.data)[props.crypto.id])]);
+        
+        if (chartSeries.value.data.length > MAX_HISTORIC_DATA_LENGTH) {
+          chartSeries.value.data = chartSeries.value.data.slice(
+            chartSeries.value.data.length - MAX_HISTORIC_DATA_LENGTH
+          );
+        }
       } catch { }
     }
   } else if (pricesWs.value !== null) {

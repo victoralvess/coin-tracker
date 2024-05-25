@@ -8,7 +8,7 @@
         <Transition name="modal-content">
           <div
             v-if="modalOpen"
-            class="p-4 bg-white self-start mt-32 max-w-screen-md rounded-lg"
+            class="absolute p-4 bg-white self-start top-[50%] translate-y-[-50%] mx-2 max-w-screen-md rounded-lg"
             :class="contentClasses"
             @click.stop
         >

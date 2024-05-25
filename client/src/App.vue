@@ -25,6 +25,12 @@ const removeCrypto = (crypto: Crypto): void => {
   updateLocalStorage();
 }
 
+const updatePrice = (crypto: Crypto, newPrice: number): void => {
+  savedCrypto.value = [{ ...crypto, price: newPrice }]
+    .concat(savedCrypto.value.filter(c => c.id !== crypto.id));
+  updateLocalStorage();
+}
+
 const updateLocalStorage = () => {
   localStorage.setItem(localStorageKey, JSON.stringify(savedCrypto.value));
 }
@@ -86,7 +92,8 @@ getSavedCryptoRemote();
         <div class="max-w-screen-md w-full">
           <div class="flex flex-col md:flex-row gap-4 overflow-x-auto py-4">
             <div v-for="crypto in searchResults" :key="crypto.id">
-              <CryptoCard :crypto="crypto" :saved="isSaved(crypto)" @add="addCrypto" @remove="removeCrypto" />
+              <CryptoCard :crypto="crypto" :saved="isSaved(crypto)" @add="addCrypto" @remove="removeCrypto"
+                @new-price="updatePrice" />
             </div>
           </div>
         </div>
@@ -100,7 +107,8 @@ getSavedCryptoRemote();
         <div class="max-w-screen-md w-full">
           <div class="flex flex-col md:flex-row gap-4 overflow-x-auto py-4">
             <div v-for="crypto in savedCrypto" :key="crypto.id">
-              <CryptoCard :crypto="crypto" :saved="isSaved(crypto)" @add="addCrypto" @remove="removeCrypto" />
+              <CryptoCard :crypto="crypto" :saved="isSaved(crypto)" @add="addCrypto" @remove="removeCrypto"
+                @new-price="updatePrice" />
             </div>
           </div>
         </div>

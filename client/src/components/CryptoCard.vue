@@ -6,7 +6,11 @@ import Modal from './Modal.vue';
 import { ApexOptions } from 'apexcharts';
 
 const props = defineProps<{ crypto: Crypto, saved: boolean }>()
-defineEmits<{ add: [crypto: Crypto], remove: [crypto: Crypto] }>()
+const emit = defineEmits<{
+  add: [crypto: Crypto],
+  remove: [crypto: Crypto],
+  'new-price': [crypto: Crypto, price: number]
+}>()
 
 const setDefaultIcon = (evt: Event): void => {
   (evt.target! as HTMLImageElement).src
@@ -41,8 +45,10 @@ const toggleWs = () => {
     pricesWs.value = new WebSocket(`wss://ws.coincap.io/prices?assets=${props.crypto.id}`);
     pricesWs.value.onmessage = (msg: { data: string }): void => {
       try {
-        chartSeries.value.data
-          .push([Date.now(), Number(JSON.parse(msg.data)[props.crypto.id])]);
+        const newPrice = Number(JSON.parse(msg.data)[props.crypto.id]);
+        chartSeries.value.data.push([Date.now(), newPrice]);
+        
+        emit('new-price', props.crypto, newPrice);
         
         if (chartSeries.value.data.length > MAX_HISTORIC_DATA_LENGTH) {
           chartSeries.value.data = chartSeries.value.data.slice(

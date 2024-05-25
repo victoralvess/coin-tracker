@@ -39,7 +39,7 @@ const isSaved = (crypto: Crypto): boolean => {
   return savedCrypto.value.findIndex(c => c.id === crypto.id) !== -1;
 }
 
-
+const initialLoad = ref<boolean>(true);
 const searchText = ref<string>('');
 const searchResults = ref<Crypto[]>([]);
 const searchTimeout = ref<number | undefined>();
@@ -57,9 +57,12 @@ const searchCrypto = (): void => {
       searchResults.value = result.data.data;
     } catch {
       searchResults.value = [];
+    } finally {
+      initialLoad.value = false;
     }
   }, 300);
 }
+
 
 const getSavedCryptoRemote = async (): Promise<void> => {
   const result = await Promise.allSettled(savedCrypto.value.map(c => {
@@ -78,6 +81,7 @@ const getSavedCryptoRemote = async (): Promise<void> => {
 }
 
 getSavedCryptoRemote();
+searchCrypto();
 </script>
 
 <template>
@@ -90,7 +94,13 @@ getSavedCryptoRemote();
         </div>
 
         <div class="max-w-screen-md w-full">
-          <div class="flex flex-col md:flex-row gap-4 overflow-x-auto py-4">
+          <div v-if="searchResults.length === 0 && !initialLoad" class="bg-slate-900 rounded-lg p-4">
+            <p class="text-white">No results matching your query</p>
+          </div>
+          <div v-else-if="initialLoad" class="bg-slate-900 rounded-lg p-4">
+            <p class="text-white">Loading the most popular assets for you</p>
+          </div>
+          <div v-else class="flex flex-col md:flex-row gap-4 overflow-x-auto py-4">
             <div v-for="crypto in searchResults" :key="crypto.id">
               <CryptoCard :crypto="crypto" :saved="isSaved(crypto)" @add="addCrypto" @remove="removeCrypto"
                 @new-price="updatePrice" />

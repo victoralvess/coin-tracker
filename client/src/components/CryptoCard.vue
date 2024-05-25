@@ -2,7 +2,11 @@
 import { Crypto } from '../types/crypto';
 
 defineProps<{ crypto: Crypto, saved: boolean }>()
-defineEmits<{ add: [crypto: Crypto], remove: [crypto: Crypto] }>()
+defineEmits<{
+  add: [crypto: Crypto],
+  remove: [crypto: Crypto],
+  preview: [crypto: Crypto]
+}>()
 
 const setDefaultIcon = (evt: Event): void => {
   (evt.target! as HTMLImageElement).src
@@ -21,11 +25,14 @@ const setDefaultIcon = (evt: Event): void => {
       <p class="text-sm mt-1">${{ crypto.price.toFixed(2) }}</p>
     </div>
     <div class="absolute top-4 right-4">
+      <button v-if="saved" @click="$emit('preview', crypto)" class="mr-3">
+        <i class="fa-solid fa-magnifying-glass-chart text-xl text-white-400 hover:text-gray-200"></i>
+      </button>
       <button v-if="saved" @click="$emit('remove', crypto)">
-        <i class="fa-solid fa-circle-minus text-2xl text-white-400 hover:text-gray-200"></i>
+        <i class="fa-solid fa-circle-minus text-xl text-white-400 hover:text-gray-200"></i>
       </button>
       <button v-else @click="$emit('add', crypto)">
-        <i class="fa-solid fa-circle-plus text-2xl text-white-400 hover:text-gray-200"></i>
+        <i class="fa-solid fa-circle-plus text-xl text-white-400 hover:text-gray-200"></i>
       </button>
     </div>
   </div>

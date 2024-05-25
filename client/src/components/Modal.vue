@@ -9,6 +9,7 @@
           <div
             v-if="modalOpen"
             class="p-4 bg-white self-start mt-32 max-w-screen-md rounded-lg"
+            :class="contentClasses"
             @click.stop
         >
             <slot></slot>
@@ -21,7 +22,7 @@
 
 <script setup lang="ts">
 defineEmits<{ 'close-modal': [] }>();
-defineProps<{ modalOpen?: boolean }>();
+defineProps<{ modalOpen?: boolean, contentClasses?: string | string[] }>();
 </script>
 
 <style scoped>

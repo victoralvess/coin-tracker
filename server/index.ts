@@ -1,9 +1,11 @@
 import { env } from 'node:process';
 import express from 'express';
 import type { NextFunction, Request, Response } from 'express';
+import axios from 'axios';
+import cors from 'cors';
+
 import { CoinCapService } from './src/services/coin-cap-service';
 import { AxiosHttpService } from './src/services/axios-http-service';
-import axios from 'axios';
 import { CoinCapSearchValidator } from './src/services/utils/coin-cap-search-validator';
 import { SearchCoins } from './src/application/use-cases/search-coins';
 import { SearchCoinsValidator } from './src/application/utils/search-coins-validator';
@@ -24,6 +26,8 @@ function asyncRoute(cb: (req: Request, res: Response) => Promise<void>) {
 }
 
 const app = express();
+
+app.use(cors());
 
 app.get('/ping', (req: Request, res: Response) => {
     res.send('PONG');

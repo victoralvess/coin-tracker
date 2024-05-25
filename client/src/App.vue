@@ -54,6 +54,24 @@ const searchCrypto = (): void => {
     }
   }, 300);
 }
+
+const getSavedCryptoRemote = async (): Promise<void> => {
+  const result = await Promise.allSettled(savedCrypto.value.map(c => {
+    return axios.get<Crypto>(`http://localhost:3000/coins/${c.id}`);
+  }));
+
+  savedCrypto.value = result.map((res, idx) => {
+    if (res.status === 'rejected') {
+      return savedCrypto.value[idx];
+    } else {
+      return res.value.data;
+    }
+  });
+
+  updateLocalStorage();
+}
+
+getSavedCryptoRemote();
 </script>
 
 <template>

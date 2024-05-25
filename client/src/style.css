@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    .base-input {
+        @apply px-4 py-2 border-b rounded-t-md focus:outline-none bg-slate-600 caret-slate-50 text-white focus:ring-0 border-b-white focus:border-0 focus:border-b focus:border-b-white
+    }
+}

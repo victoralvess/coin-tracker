@@ -94,7 +94,7 @@ searchCrypto();
       <div class="flex flex-col flex-1 gap-2 items-center">
         <div class="my-4 max-w-screen-md w-full">
           <input type="search" v-model="searchText" @input="searchCrypto" placeholder="Search for a cryptocurrency"
-            class="px-4 py-2 w-full border-b rounded-t-md focus:outline-none bg-slate-600 caret-slate-50 text-white">
+            class="base-input w-full">
         </div>
 
         <div class="max-w-screen-md w-full">

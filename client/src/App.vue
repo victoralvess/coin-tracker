@@ -46,6 +46,7 @@ const initialLoad = ref<boolean>(true);
 const searchText = ref<string>('');
 const searchResults = ref<Crypto[]>([]);
 const searchTimeout = ref<number | undefined>();
+const searchError = ref<boolean>(false);
 
 const searchCrypto = (): void => {
   clearTimeout(searchTimeout.value);
@@ -58,7 +59,9 @@ const searchCrypto = (): void => {
         );
 
       searchResults.value = result.data.data;
+      searchError.value = false;
     } catch {
+      searchError.value = true;
       searchResults.value = [];
     } finally {
       initialLoad.value = false;
@@ -115,7 +118,10 @@ const refreshPrices = (): void => {
         </div>
 
         <div class="max-w-screen-md w-full">
-          <div v-if="searchResults.length === 0 && !initialLoad" class="bg-slate-900 rounded-lg p-4">
+          <div v-if="searchError" class="bg-slate-900 rounded-lg p-4">
+            <p class="text-white">Something bad happend, try again</p>
+          </div>        
+          <div v-else-if="searchResults.length === 0 && !initialLoad" class="bg-slate-900 rounded-lg p-4">
             <p class="text-white">No results matching your query</p>
           </div>
           <div v-else-if="initialLoad" class="bg-slate-900 rounded-lg p-4">

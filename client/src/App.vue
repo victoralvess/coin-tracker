@@ -85,6 +85,23 @@ const getSavedCryptoRemote = async (): Promise<void> => {
 
 getSavedCryptoRemote();
 searchCrypto();
+
+const refreshTimeInSecs = ref<number | null>(null);
+const refreshInterval = ref<number | undefined>();
+
+const refreshPrices = (): void => {
+  clearInterval(refreshInterval.value);
+  if (refreshTimeInSecs.value === null) {
+    return;
+  }
+
+  refreshInterval.value = setInterval(async () => {
+    try {
+      await getSavedCryptoRemote();
+    } catch { }
+  }, refreshTimeInSecs.value * 1000);
+}
+
 </script>
 
 <template>
@@ -114,8 +131,12 @@ searchCrypto();
 
         <hr class="border my-4 max-w-screen-md w-full">
 
-        <div class="mb-1 max-w-screen-md w-full">
+        <div class="mb-1 max-w-screen-md w-full flex flex-1 justify-between">
           <h2 class="text-white uppercase font-bold">My crypto</h2>
+          <select class="base-input w-[150px]" v-model="refreshTimeInSecs" @change="refreshPrices">
+            <option :value="null">No refresh</option>
+            <option v-for="value in [10, 15, 30, 60]" :value="value">{{ value }}s</option>
+          </select>
         </div>
 
         <div class="max-w-screen-md w-full">

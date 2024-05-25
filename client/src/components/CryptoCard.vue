@@ -138,9 +138,13 @@ const chartOptions: ApexOptions = {
       </div>
     </div>
 
-    <Modal :modal-open="modalOpen" @close-modal="toggleModal">
+    <Modal
+      :modal-open="modalOpen"
+      @close-modal="toggleModal"
+      content-classes="max-w-[500px] w-full"
+    >
       <div>
-        <apexchart width="500" type="area" :options="chartOptions" :series="[chartSeries]"></apexchart>
+        <apexchart width="100%" type="area" :options="chartOptions" :series="[chartSeries]"></apexchart>
       </div>
     </Modal>
   </div>

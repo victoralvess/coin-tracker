@@ -3,12 +3,18 @@ import { Crypto } from '../types/crypto';
 
 defineProps<{ crypto: Crypto, saved: boolean }>()
 defineEmits<{ add: [crypto: Crypto], remove: [crypto: Crypto] }>()
+
+const setDefaultIcon = (evt: Event): void => {
+  (evt.target! as HTMLImageElement).src
+    = 'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/128/white/generic.png'
+}
 </script>
 
 <template>
-  <div class="relative flex gap-5 items-center rounded-lg border min-w-[400px] w-full h-[100px] px-4 bg-slate-600 text-white">
+  <div
+    class="relative flex gap-5 items-center rounded-lg border min-w-[400px] w-full h-[100px] px-4 bg-slate-600 text-white">
     <div>
-      <img :src="crypto.icon" class="w-auto h-[60px]">
+      <img :src="crypto.icon" class="w-auto h-[60px]" @error="setDefaultIcon">
     </div>
     <div>
       <h3 class="font-bold mt-2">{{ crypto.symbol }}</h3>

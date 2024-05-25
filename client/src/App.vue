@@ -59,14 +59,29 @@ const searchCrypto = (): void => {
 <template>
   <main class="container">
     <div>
-      <div class="flex flex-col flex-1 gap-4 items-center">
-        <div class="my-8 max-w-screen-md w-full">
+      <div class="flex flex-col flex-1 gap-2 items-center">
+        <div class="my-4 max-w-screen-md w-full">
           <input type="search" v-model="searchText" @input="searchCrypto" placeholder="Search for a cryptocurrency"
             class="px-4 py-2 w-full border-b rounded-t-md focus:outline-none bg-slate-600 caret-slate-50 text-white">
         </div>
+
         <div class="max-w-screen-md w-full">
-          <div class="flex flex-col md:flex-row gap-4 overflow-x-auto">
+          <div class="flex flex-col md:flex-row gap-4 overflow-x-auto py-4">
             <div v-for="crypto in searchResults" :key="crypto.id">
+              <CryptoCard :crypto="crypto" :saved="isSaved(crypto)" @add="addCrypto" @remove="removeCrypto" />
+            </div>
+          </div>
+        </div>
+
+        <hr class="border my-4 max-w-screen-md w-full">
+
+        <div class="mb-1 max-w-screen-md w-full">
+          <h2 class="text-white uppercase font-bold">My crypto</h2>
+        </div>
+
+        <div class="max-w-screen-md w-full">
+          <div class="flex flex-col md:flex-row gap-4 overflow-x-auto py-4">
+            <div v-for="crypto in savedCrypto" :key="crypto.id">
               <CryptoCard :crypto="crypto" :saved="isSaved(crypto)" @add="addCrypto" @remove="removeCrypto" />
             </div>
           </div>

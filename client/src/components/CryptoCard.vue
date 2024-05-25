@@ -12,7 +12,7 @@ const setDefaultIcon = (evt: Event): void => {
 
 <template>
   <div
-    class="relative flex gap-5 items-center rounded-lg border min-w-[400px] w-full h-[100px] px-4 bg-slate-600 text-white">
+    class="relative flex gap-5 items-center rounded-lg border min-w-[280px] w-full h-[100px] px-4 bg-slate-600 text-white">
     <div>
       <img :src="crypto.icon" class="w-auto h-[60px]" @error="setDefaultIcon">
     </div>

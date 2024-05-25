@@ -19,9 +19,18 @@ const toggleModal = () => {
   toggleWs();
 };
 
+const localStorageKey = `chartSeries.${props.crypto.id}`;
+const getLocalStorageData = (): [number, number][] => {
+  try {
+    return JSON.parse(localStorage.getItem(localStorageKey) ?? '[]');
+  } catch {
+    return [];
+  }
+}
+
 const chartSeries = ref<{ name: string, data: [number, number][] }>({
   name: props.crypto.symbol,
-  data: []
+  data: getLocalStorageData()
 });
 
 const MAX_HISTORIC_DATA_LENGTH = 100;
@@ -40,6 +49,8 @@ const toggleWs = () => {
             chartSeries.value.data.length - MAX_HISTORIC_DATA_LENGTH
           );
         }
+
+        localStorage.setItem(localStorageKey, JSON.stringify(chartSeries.value.data));
       } catch { }
     }
   } else if (pricesWs.value !== null) {

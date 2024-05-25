@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import CryptoCard from './components/CryptoCard.vue'
-import { Crypto } from './types/crypto';
 import axios from 'axios';
+
+import { Crypto } from './types/crypto';
+import CryptoCard from './components/CryptoCard.vue';
+import AppHeader from './components/AppHeader.vue';
+
 
 const localStorageKey = 'crypto';
 
@@ -85,6 +88,7 @@ searchCrypto();
 </script>
 
 <template>
+  <AppHeader></AppHeader>
   <main class="container">
     <div>
       <div class="flex flex-col flex-1 gap-2 items-center">
